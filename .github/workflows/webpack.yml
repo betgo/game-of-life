@@ -28,7 +28,7 @@ jobs:
         npm install
         npm run build
 
-     - name: Upload to target repository
+    - name: Upload to target repository
       uses: actions/upload-artifact@v2
       with:
         name: build
