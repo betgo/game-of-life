@@ -22,9 +22,16 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
-      - name: Build and Deploy 🚀
+
+      - name: Install and Build 🔧 # This example project is built using npm and outputs the result to the 'build' folder. Replace with the commands required to build your project, or remove this step entirely if your site is pre-built.
+        run: |
+          cd www
+          npm install
+          npm run build
+
+      - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@v4
-        env:
-          ACCESS_TOKEN: ${{ secrets.ACTIONS_DEPLOY_ACCESS_TOKEN }}
-          FOLDER: docs
-          BUILD_SCRIPT: cd www && npm install && npm run build
+        with:
+          folder: docs # The folder the action should deploy.
+          token: ${{ secrets.ACTIONS_DEPLOY_ACCESS_TOKEN }}
+          branch: main
