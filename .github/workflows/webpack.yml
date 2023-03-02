@@ -2,9 +2,9 @@ name: NodeJS with Webpack
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
   pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
 
 jobs:
   build:
@@ -15,25 +15,24 @@ jobs:
         node-version: [16.x]
 
     steps:
-    - uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v3
-      with:
-        node-version: ${{ matrix.node-version }}
-
-    - name: Build
-      run: |
-        cd www
-        npm install
-        npm run build
-
-    # - name: Upload to target repository
-    #   uses: actions/upload-artifact@v2
-    #   with:
-    #     name: build
-    #     path: docs/
-    - name: Deploy 🚀
-        uses: JamesIves/github-pages-deploy-action@v4
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
         with:
-          folder: docs/ # The folder the action should deploy.
+          node-version: ${{ matrix.node-version }}
+
+      - name: Build
+        run: |
+          cd www
+          npm install
+          npm run build
+          
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v1
+        with:
+          # Upload entire repository
+          path: 'docs'
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v1
