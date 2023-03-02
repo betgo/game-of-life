@@ -2,8 +2,10 @@ extern crate js_sys;
 extern crate wasm_bindgen;
 
 use std::fmt;
+use std::iter::Iterator;
 
 use wasm_bindgen::prelude::*;
+
 
 #[wasm_bindgen]
 #[repr(u8)]
@@ -37,19 +39,38 @@ impl Universe {
         (row * self.width + column) as usize
     }
     fn live_neighbor_count(&self, row: u32, column: u32) -> u8 {
-        let mut count = 0;
-        for delta_row in [self.height - 1, 0, 1].iter().cloned() {
-            for delta_col in [self.width - 1, 0, 1].iter().cloned() {
-                if delta_row == 0 && delta_col == 0 {
-                    continue;
-                }
-                let neighbor_row = (row + delta_row) % self.height;
-                let neighbor_col = (column + delta_col) % self.width;
-                let idx = self.get_index(neighbor_row, neighbor_col);
-                count += self.cells[idx] as u8;
-            }
-        }
-        count
+        // let mut count = 0;
+        // for delta_row in [self.height - 1, 0, 1].iter().cloned() {
+        //     for delta_col in [self.width - 1, 0, 1].iter().cloned() {
+        //         if delta_row == 0 && delta_col == 0 {
+        //             continue;
+        //         }
+        //         let neighbor_row = (row + delta_row) % self.height;
+        //         let neighbor_col = (column + delta_col) % self.width;
+        //         let idx = self.get_index(neighbor_row, neighbor_col);
+        //         count += self.cells[idx] as u8;
+        //     }
+        // }
+        // count
+        // chatGpt code 
+        [
+            (-1, -1),
+            (-1, 0),
+            (-1, 1),
+            (0, -1),
+            (0, 1),
+            (1, -1),
+            (1, 0),
+            (1, 1),
+        ]
+        .iter()
+        .map(|&(delta_row, delta_col)| {
+            let neighbor_row = (row as i32 + delta_row + self.height as i32) as u32 % self.height;
+            let neighbor_col = (column as i32 + delta_col + self.width as i32) as u32 % self.width;
+            let idx = self.get_index(neighbor_row, neighbor_col);
+            self.cells[idx] as u8
+        })
+        .sum()
     }
     pub fn get_cells(&self) -> &[Cell] {
         &self.cells
@@ -98,6 +119,7 @@ impl Universe {
     }
 
     pub fn tick(&mut self) {
+        // let _timer = Timer::new("Universe::tick");
         let mut next = self.cells.clone();
 
         for row in 0..self.height {
