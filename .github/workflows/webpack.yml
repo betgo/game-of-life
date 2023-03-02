@@ -23,8 +23,8 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - name: Build and Deploy 🚀
-          uses: JamesIves/github-pages-deploy-action@v4
-          env:
-            ACCESS_TOKEN: ${{ secrets.ACTIONS_DEPLOY_ACCESS_TOKEN }}
-            FOLDER: docs
-            BUILD_SCRIPT: cd www && npm install && npm run build
+        uses: JamesIves/github-pages-deploy-action@v4
+        env:
+          ACCESS_TOKEN: ${{ secrets.ACTIONS_DEPLOY_ACCESS_TOKEN }}
+          FOLDER: docs
+          BUILD_SCRIPT: cd www && npm install && npm run build
