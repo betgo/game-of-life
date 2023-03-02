@@ -27,6 +27,12 @@ jobs:
           cd www
           npm install
           npm run build
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v1
+        with:
+          # Upload entire repository
+          path: 'docs'
    # Deploy job
   deploy:
     # Add a dependency to the build job
