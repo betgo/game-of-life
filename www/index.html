@@ -32,9 +32,21 @@
     white-space: pre;
     font-family: monospace;
   }
+  #generation span{
+    margin: 0 4px;
+  }
+  .stable{
+    font-size: 20px;
+    color: green;
+  }
+  .evolve{
+    font-size: 20px;
+    color: red;
+  }
 </style>
 
 <body>
+  <div id="generation"></div>
   <div><button id="play-pause"></button> <button id="play-reset">🔄</button><button id="play-destroy">⏺</button></div>
   <div>🚀<input type="range" id="play-speed" min="0" max="10" value="1" step="1"></div>
   <canvas id="game-of-life-canvas"></canvas>

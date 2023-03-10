@@ -6,7 +6,6 @@ use std::iter::Iterator;
 
 use wasm_bindgen::prelude::*;
 
-
 #[wasm_bindgen]
 #[repr(u8)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
@@ -32,6 +31,7 @@ pub struct Universe {
     width: u32,
     height: u32,
     cells: Vec<Cell>,
+    snapshot: Vec<Vec<Cell>>,
 }
 
 impl Universe {
@@ -52,7 +52,7 @@ impl Universe {
         //     }
         // }
         // count
-        // chatGpt code 
+        // chatGpt code
         [
             (-1, -1),
             (-1, 0),
@@ -80,6 +80,12 @@ impl Universe {
         for (row, col) in cells.iter().cloned() {
             let idx = self.get_index(row, col);
             self.cells[idx] = Cell::Alive;
+        }
+    }
+    pub fn update_snapshot(&mut self) {
+        self.snapshot.push(self.cells.to_vec());
+        if self.snapshot.len() > 4 {
+            self.snapshot.remove(0);
         }
     }
 }
@@ -147,10 +153,12 @@ impl Universe {
             }
         }
         self.cells = next;
+        self.update_snapshot();
     }
     pub fn new() -> Universe {
         let width = 64;
         let height = 64;
+        let snapshot = vec![];
 
         let cells = (0..width * height)
             .map(|_i| {
@@ -165,6 +173,7 @@ impl Universe {
             width,
             height,
             cells,
+            snapshot,
         }
     }
     pub fn render(&self) -> String {
@@ -182,5 +191,14 @@ impl Universe {
         for cell in self.cells.iter_mut() {
             *cell = Cell::Dead
         }
+    }
+    //TODO it can be a const dont need calculalte
+    pub fn get_system_stable(&self) -> bool {
+        for i in 0..self.snapshot.len() - 1 {
+            if self.snapshot[i] == self.snapshot[self.snapshot.len() - 1] {
+                return true;
+            }
+        }
+        return false;
     }
 }

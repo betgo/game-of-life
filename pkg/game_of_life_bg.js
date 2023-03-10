@@ -138,6 +138,13 @@ export class Universe {
     destory() {
         wasm.universe_destory(this.ptr);
     }
+    /**
+    * @returns {boolean}
+    */
+    get_system_stable() {
+        const ret = wasm.universe_get_system_stable(this.ptr);
+        return ret !== 0;
+    }
 }
 
 export const __wbg_random_afb3265527cf67c8 = typeof Math.random == 'function' ? Math.random : notDefined('Math.random');

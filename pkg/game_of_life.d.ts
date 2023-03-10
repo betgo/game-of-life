@@ -55,4 +55,8 @@ export class Universe {
 /**
 */
   destory(): void;
+/**
+* @returns {boolean}
+*/
+  get_system_stable(): boolean;
 }

@@ -13,5 +13,6 @@ export function universe_render(a: number, b: number): void;
 export function universe_toggle_cell(a: number, b: number, c: number): void;
 export function universe_change_cell(a: number, b: number, c: number, d: number): void;
 export function universe_destory(a: number): void;
+export function universe_get_system_stable(a: number): number;
 export function __wbindgen_add_to_stack_pointer(a: number): number;
 export function __wbindgen_free(a: number, b: number): void;

@@ -18,6 +18,7 @@ const ctx = canvas.getContext("2d");
 
 let animationId = null;
 let speed = 1;
+let generation = 0;
 
 const fps = new (class {
   constructor() {
@@ -56,10 +57,22 @@ const fps = new (class {
     `.trim();
   }
 })();
+
+function generationRender() {
+  let generationDiv = document.getElementById("generation");
+  let sysmtem_stablie = universe.get_system_stable();
+  generationDiv.innerHTML = `<span>第${generation}代</span><span class="${
+    sysmtem_stablie ? "stable" : "evolve"
+  }">${sysmtem_stablie ? "稳定" : "进化"}</span>`;
+}
 const renderLoop = () => {
   fps.render();
   for (let i = speed; i > 0; i--) {
     universe.tick();
+    if (!universe.get_system_stable()) {
+      generation += 1;
+    }
+    generationRender();
   }
 
   draw();
@@ -154,6 +167,7 @@ const pause = () => {
 };
 const reset = () => {
   universe = Universe.new();
+  generation = 0;
 };
 
 playPauseButton.addEventListener("click", (event) => {
