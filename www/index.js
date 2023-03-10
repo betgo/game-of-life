@@ -170,6 +170,11 @@ const reset = () => {
   generation = 0;
 };
 
+const destory = () => {
+  universe.destory();
+  generation = 0;
+};
+
 playPauseButton.addEventListener("click", (event) => {
   if (isPaused()) {
     play();
@@ -182,7 +187,7 @@ playResetButton.addEventListener("click", (event) => {
   draw();
 });
 playDestroyButton.addEventListener("click", (event) => {
-  universe.destory();
+  destory();
   draw();
 });
 const range = document.getElementById("play-speed");
